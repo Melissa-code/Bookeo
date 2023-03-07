@@ -16,6 +16,8 @@ class Controller
                         $pageController->route();
                         break;
                     case 'book':
+                        $bookController = new BookController();
+                        $bookController->route();
                         break;
                     default:
                         throw new \Exception("Ce contrôleur  n'existe pas.");

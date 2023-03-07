@@ -4,8 +4,8 @@
 namespace App\Controller;
 
 
-class PageController extends Controller
-{
+class PageController extends Controller {
+
     /**
      * Router (action)
      */
