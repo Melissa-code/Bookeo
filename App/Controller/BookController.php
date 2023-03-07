@@ -47,7 +47,7 @@ class BookController extends Controller {
     }
 
     /**
-     *
+     * Show a single book
      */
     protected function show(): void
     {
