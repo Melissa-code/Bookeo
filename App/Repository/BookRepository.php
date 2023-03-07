@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Book;
 use App\Database\MySql;
+use App\Tools\StringTools;
 
 class BookRepository
 {
@@ -15,7 +16,7 @@ class BookRepository
     public function findOneById(int $id) : Book
     {
         $mySql = MySql::getInstance();
-        // var_dump($mySql);
+        // var_dump($mySql); //OK
 
         // a single instance of PDO
         $pdo = $mySql->getPDO();
@@ -23,22 +24,14 @@ class BookRepository
         $query = $pdo->prepare("SELECT * FROM book WHERE id = :id");
         $query->bindValue(':id', $id, $pdo::PARAM_INT);
         $query->execute();
-        $book = $query->fetch();
+        $book = $query->fetch($pdo::FETCH_ASSOC); // To return one array only
 
-        // simulation DB
-//        $book = [
-//            'id' => 1,
-//            'title' => "Cyrano de Bergerac",
-//            'description' => "Cyrano de Bergerac est l'une des pièces les plus populaires du théâtre français, et la plus célèbre de son auteur, Edmond Rostand."
-//        ];
         $bookEntity = new Book();
-        $bookEntity->setId($book['id']);
-        $bookEntity->setTitle($book['title']);
-        $bookEntity->setDescription($book['description']);
 
-//        foreach ($bookEntity as $key => $value) {
-//            $bookEntity->{'set'}($value);
-//        }
+        foreach ($book as $key => $value) {
+            //var_dump(StringTools::toPascalCase($key));
+            $bookEntity->{'set'.StringTools::toPascalCase($key)}($value);
+        }
 
         return $bookEntity;
     }
